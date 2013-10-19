@@ -1,5 +1,9 @@
 Package pcurve Change Log
 
+Version 0.6-5
+
+	* require: removed all require() calls to packages in Depends.
+
 Version 0.6-4
 
 	* pcurve has a new maintainer: Gavin Simpson

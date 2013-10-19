@@ -1,10 +1,6 @@
-#require(mva) for dist (from R 1.9 part of stats) (see zzz.R)
-#require (vegan) for spantree
-
-"startPC"<-
-function(x, ext.dist = TRUE, dc = 0.9, rank = FALSE, type = "pca", metric = "bray", 
-	fuzz = TRUE, eps = 1e-006, verb = TRUE)
-{
+"startPC" <- function(x, ext.dist = TRUE, dc = 0.9, rank = FALSE,
+                      type = "pca", metric = "bray",
+                      fuzz = TRUE, eps = 1e-006, verb = TRUE) {
 	if(verb)
 		cat("\nEstimating starting configuration using : ")
 	n <- dim(x)[1]
@@ -32,16 +28,14 @@ function(x, ext.dist = TRUE, dc = 0.9, rank = FALSE, type = "pca", metric = "bra
 		lambda <- as.vector(pca(xx)$pcs[, 1])
 	}
 	else if(type == "mds") {
-                require(vegan)
 		if(verb)
 			cat("MDS\n")
-		mdssims <- vegdist(mdsform(x[, 1:p], scale = FALSE), method = "euclidean") + 
+		mdssims <- vegdist(mdsform(x[, 1:p], scale = FALSE), method = "euclidean") +
 			ifelse(fuzz, eps, 0)
 		lambda <- isoMDS(mdssims, y = cmdscale(mdssims),
                                  k = 2, trace = FALSE)$points[,1]
 	}
 	else if(type == "mds.bc") {
-                require(vegan)
 		if(verb)
 			cat("MDS.BC\n")
 			mdssims <- vegdist(x[, 1:p], method="bray") + ifelse(
@@ -51,11 +45,10 @@ function(x, ext.dist = TRUE, dc = 0.9, rank = FALSE, type = "pca", metric = "bra
 				cat("Using extended distances \n")
                         mdssims <- stepacross(mdssims, toolong = dc)
 		}
-        	lambda <- isoMDS(mdssims, y = cmdscale(mdssims), 
+        	lambda <- isoMDS(mdssims, y = cmdscale(mdssims),
 			         k = 2, trace = FALSE)$points[,1]
 	}
 	else if(type == "cs.bc") {
-                require(vegan)
 		if(verb)
 			cat("CS.BC\n")
 		mdssims <- dist(mdsform(x[, 1:p], scale = TRUE), method = "man")/2 +
